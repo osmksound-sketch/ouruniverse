@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Для тебя — личный сайт-подарок</title>
+</head>
+<body>
+  <h1>Для тебя</h1>
+  <p>Наши моменты</p>
+  <div id="gallery"></div>
+
+  <script>
+    const IMAGES = [
+      { src: 'photos/1.jpg', cap: 'Тот самый взгляд' },
+      { src: 'photos/2.jpg', cap: 'Смешной кадр' },
+    ];
+
+    const gal = document.getElementById('gallery');
+    IMAGES.forEach(p => {
+      const img = document.createElement('img');
+      img.src = p.src;
+      img.alt = p.cap;
+      img.style.maxWidth = '200px';
+      img.style.margin = '10px';
+      gal.appendChild(img);
+    });
+
+    const song = new Audio('audio/your-song.mp3');
+  </script>
+</body>
+</html>
