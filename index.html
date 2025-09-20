@@ -143,35 +143,46 @@
   <script>
     // Album
     const TRACKS = [
-      { src: 'Osman & Lena - Ночной рейс.mp3', title: 'Osman & Lena - Ночной рейс' },
-      { src: 'audio/2.mp3', title: 'Песня 2' },
-      { src: 'audio/3.mp3', title: 'Песня 3' },
-      { src: 'audio/4.mp3', title: 'Песня 4' },
-      { src: 'audio/5.mp3', title: 'Песня 5' },
-      { src: 'audio/6.mp3', title: 'Песня 6' },
-      { src: 'audio/7.mp3', title: 'Песня 7' },
-      { src: 'audio/8.mp3', title: 'Песня 8' },
+      { src: 'audio/Lena - Забудешь.mp3',            title: 'Lena — Забудешь' },
+      { src: 'audio/Osman & Lena - Берега.mp3',     title: 'Osman & Lena — Берега' },
+      { src: 'audio/Osman & Lena - Вселенная.mp3',  title: 'Osman & Lena — Вселенная' },
+      { src: 'audio/Osman & Lena - Кислород.mp3',   title: 'Osman & Lena — Кислород' },
+      { src: 'audio/Osman & Lena - Луна 2.mp3',     title: 'Osman & Lena — Луна 2' },
+      { src: 'audio/Osman & Lena - Ночной рейс.mp3',title: 'Osman & Lena — Ночной рейс' },
+      { src: 'audio/Osman Lena - Передружба-Не.mp3',title: 'Osman Lena — Передружба-Не…' },
+      { src: 'audio/Osman ft Lena - Лейла.mp3',     title: 'Osman ft Lena — Лейла' },
     ];
     let currentIndex = 0;
     const audio = new Audio(TRACKS[currentIndex].src);
     const currentTrackEl = document.getElementById('currentTrack');
 
     function updateAlbum() {
+      const prevIdx = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
+      const nextIdx = (currentIndex + 1) % TRACKS.length;
       document.getElementById('trackTitle').textContent = TRACKS[currentIndex].title;
-      document.getElementById('prevTrack').textContent = TRACKS[(currentIndex - 1 + TRACKS.length) % TRACKS.length].title;
-      document.getElementById('nextTrack').textContent = TRACKS[(currentIndex + 1) % TRACKS.length].title;
+      const prevEl = document.getElementById('prevTrack');
+      const nextEl = document.getElementById('nextTrack');
+      prevEl.textContent = TRACKS[prevIdx].title;
+      nextEl.textContent = TRACKS[nextIdx].title;
+      prevEl.className = 'track side';
+      nextEl.className = 'track side';
+      prevEl.onclick = ()=>{ currentIndex = prevIdx; audio.src = TRACKS[currentIndex].src; audio.play(); updateAlbum(); };
+      nextEl.onclick = ()=>{ currentIndex = nextIdx; audio.src = TRACKS[currentIndex].src; audio.play(); updateAlbum(); };
       document.getElementById('playPauseBtn').textContent = audio.paused ? '▶' : '⏸';
       if(audio.paused){ currentTrackEl.classList.remove('playing'); } else { currentTrackEl.classList.add('playing'); }
+    } else { currentTrackEl.classList.add('playing'); }
     }
 
     document.querySelector('.prev').onclick = ()=>{
       currentIndex = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
       audio.src = TRACKS[currentIndex].src;
+      audio.play();
       updateAlbum();
     };
     document.querySelector('.next').onclick = ()=>{
       currentIndex = (currentIndex + 1) % TRACKS.length;
       audio.src = TRACKS[currentIndex].src;
+      audio.play();
       updateAlbum();
     };
     document.getElementById('playPauseBtn').onclick = ()=>{
@@ -180,6 +191,12 @@
     };
     audio.addEventListener('play', ()=>{ document.getElementById('playPauseBtn').textContent='⏸'; currentTrackEl.classList.add('playing'); });
     audio.addEventListener('pause', ()=>{ document.getElementById('playPauseBtn').textContent='▶'; currentTrackEl.classList.remove('playing'); });
+    audio.addEventListener('ended', ()=>{ // автопереход к следующему
+      currentIndex = (currentIndex + 1) % TRACKS.length;
+      audio.src = TRACKS[currentIndex].src;
+      audio.play();
+      updateAlbum();
+    }); });
     updateAlbum();
 
     // Gallery
