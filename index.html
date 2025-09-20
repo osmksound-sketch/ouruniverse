@@ -70,7 +70,7 @@
     /* Gallery styles */
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
     .ph{display:block;position:relative;overflow:hidden;border-radius:var(--rad);box-shadow:var(--shadow)}
-    .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+    .ph img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .4s ease}
     .ph:hover img{transform:scale(1.05)}
     .ph .cap{position:absolute;left:0;right:0;bottom:0;padding:8px 12px;font-size:15px;color:#fff;background:linear-gradient(180deg,transparent,rgba(0,0,0,.6))}
 
@@ -173,7 +173,7 @@
       { src: 'audio/Osman ft Lena - Лейла.mp3',     title: 'Osman ft Lena — Лейла' },
     ];
     let currentIndex = 0;
-    const audio = new Audio(TRACKS[currentIndex].src);
+    const audio = new Audio(encodeURI(TRACKS[currentIndex].src));
     const currentTrackEl = document.getElementById('currentTrack');
 
     function updateAlbum() {
@@ -186,8 +186,8 @@
       nextEl.textContent = TRACKS[nextIdx].title;
       prevEl.className = 'track side';
       nextEl.className = 'track side';
-      prevEl.onclick = ()=>{ currentIndex = prevIdx; audio.src = TRACKS[currentIndex].src; audio.play(); updateAlbum(); };
-      nextEl.onclick = ()=>{ currentIndex = nextIdx; audio.src = TRACKS[currentIndex].src; audio.play(); updateAlbum(); };
+      prevEl.onclick = ()=>{ currentIndex = prevIdx; audio.src = encodeURI(TRACKS[currentIndex].src); audio.play(); updateAlbum(); };
+      nextEl.onclick = ()=>{ currentIndex = nextIdx; audio.src = encodeURI(TRACKS[currentIndex].src); audio.play(); updateAlbum(); };
       document.getElementById('playPauseBtn').textContent = audio.paused ? '▶' : '⏸';
       if(audio.paused){ currentTrackEl.classList.remove('playing'); } else { currentTrackEl.classList.add('playing'); }
     } else { currentTrackEl.classList.add('playing'); }
@@ -195,7 +195,7 @@
 
     document.querySelector('.prev').onclick = ()=>{
       currentIndex = (currentIndex - 1 + TRACKS.length) % TRACKS.length;
-      audio.src = TRACKS[currentIndex].src;
+      audio.src = encodeURI(TRACKS[currentIndex].src);
       audio.play();
       updateAlbum();
       animateOnce(document.getElementById('prevTrack'), 'enter-left');
@@ -203,7 +203,7 @@
     };
     document.querySelector('.next').onclick = ()=>{
       currentIndex = (currentIndex + 1) % TRACKS.length;
-      audio.src = TRACKS[currentIndex].src;
+      audio.src = encodeURI(TRACKS[currentIndex].src);
       audio.play();
       updateAlbum();
       animateOnce(document.getElementById('prevTrack'), 'enter-left');
@@ -217,7 +217,7 @@
     audio.addEventListener('pause', ()=>{ document.getElementById('playPauseBtn').textContent='▶'; currentTrackEl.classList.remove('playing'); });
     audio.addEventListener('ended', ()=>{ // автопереход к следующему
       currentIndex = (currentIndex + 1) % TRACKS.length;
-      audio.src = TRACKS[currentIndex].src;
+      audio.src = encodeURI(TRACKS[currentIndex].src);
       audio.play();
       updateAlbum();
     }); });
