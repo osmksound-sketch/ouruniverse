@@ -76,11 +76,36 @@
   <section class="section" id="moments">
     <div class="container">
       <h2>Наши моменты</h2>
+      <p class="lead">Двенадцать осколков света — весь альбом на одной волне.</p>
       <div class="grid" id="gallery"></div>
     </div>
   </section>
 
-  <footer>Сделано с вниманием и упрямой нежностью.</footer>
+  <section class="section" id="secret">
+  <div class="container" style="text-align:center">
+    <button id="heartBtn" style="font-size:40px;background:none;border:none;cursor:pointer;">❤️</button>
+    <div id="secretMsg" style="display:none; margin-top:20px; font-size:18px; line-height:1.6;">
+      🌸 Ты — моё вдохновение, моя музыка и мой дом.<br>
+      Спасибо, что есть. Всё остальное — неважно. 💌
+    </div>
+  </div>
+</section>
+
+<script>
+  let heartClicks = 0;
+  const heartBtn = document.getElementById('heartBtn');
+  const secretMsg = document.getElementById('secretMsg');
+
+  heartBtn.addEventListener('click', ()=>{
+    heartClicks++;
+    if(heartClicks === 3){
+      secretMsg.style.display = 'block';
+      heartBtn.textContent = '💖';
+    }
+  });
+</script>
+
+<footer>Сделано с вниманием и упрямой нежностью.</footer>
 
   <div class="lightbox" id="lightbox">
     <div class="lb-inner">
