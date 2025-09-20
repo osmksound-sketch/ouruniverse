@@ -108,6 +108,14 @@
       { src: 'photos/12.jpg', cap: 'Тот, кто всегда рядом' },
     ];
 
+    // === IntersectionObserver (создаём ДО использования) ===
+    const observer = ('IntersectionObserver' in window)
+      ? new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+        }, {threshold:.15})
+      : null;
+
+    // === Галерея ===
     const gal = document.getElementById('gallery');
     IMAGES.forEach((p, idx) => {
       const card = document.createElement('a');
@@ -117,9 +125,10 @@
       card.appendChild(img); card.appendChild(cap);
       card.addEventListener('click', (e)=>{ e.preventDefault(); openLightbox(idx); });
       gal.appendChild(card);
-      observer.observe(card);
+      if(observer) observer.observe(card); else card.classList.add('in');
     });
 
+    // === Лайтбокс ===
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     const lbCap = document.getElementById('lbCap');
@@ -132,17 +141,16 @@
     document.getElementById('lbPrev').onclick=()=>step(-1);
     document.getElementById('lbNext').onclick=()=>step(1);
 
+    // === Плеер ===
     const song=document.getElementById('song');
     const playBtn=document.getElementById('playBtn');
     let playing=false;
     playBtn.onclick=async()=>{
-      if(!playing){ await song.play(); playing=true; playBtn.textContent='⏸ Пауза'; }
-      else{ song.pause(); playing=false; playBtn.textContent='▶︎ Музыка'; }
+      try{
+        if(!playing){ await song.play(); playing=true; playBtn.textContent='⏸ Пауза'; }
+        else{ song.pause(); playing=false; playBtn.textContent='▶︎ Музыка'; }
+      }catch(e){ /* тихо игнорируем блокировку автозапуска */ }
     }
-
-    const observer=new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
-    },{threshold:.15});
   </script>
 </body>
 </html>
